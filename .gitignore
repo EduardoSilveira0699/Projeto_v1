@@ -1,0 +1,28 @@
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# dotenv
+.env
+
+# VS Code
+.vscode/
+
+# Mac/Windows
+.DS_Store
+Thumbs.db
+
+# Byte-compiled / cache
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
