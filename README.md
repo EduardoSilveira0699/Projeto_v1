@@ -25,6 +25,7 @@ simples e eficiente.
 ✔ Estrutura modular (controllers, models, database)
 
 📂 Estrutura do Projeto
+
 Projeto_v1/
 │
 ├── controllers/
@@ -47,13 +48,17 @@ Projeto_v1/
 1️⃣ Criar e ativar o ambiente virtual (Windows)
 
 powershell
+
 python -m venv venv
+
 .\venv\Scripts\activate
 
 2️⃣ Instalar dependências
+
 pip install -r requirements.txt
 
 3️⃣ Configurar o arquivo .env
+
 Crie um arquivo chamado .env na raiz do projeto:
 
 DB_HOST=localhost
@@ -62,9 +67,11 @@ DB_PASS=sua_senha
 DB_NAME=tarefas_db
 
 ⚠️ Nunca envie este arquivo ao GitHub.
+
 Use o .env.example como modelo.
 
 🗄️ Configuração do Banco de Dados
+
 Crie um banco MySQL com o nome:
 
 tarefas_db
