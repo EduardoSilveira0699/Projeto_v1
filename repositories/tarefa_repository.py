@@ -30,6 +30,18 @@ class TarefaRepository:
         conn.close()
         return tarefas
 
+    def buscar_por_id(self, tarefa_id):
+        conn = conectar()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM tarefas WHERE id=%s", (tarefa_id,))
+        tarefa = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        return tarefa
+
     def atualizar_status(self, tarefa_id, status):
         conn = conectar()
         cursor = conn.cursor()

@@ -20,7 +20,15 @@ class TarefaService:
         if status not in ("pendente", "concluido"):
             raise ValueError("Status inválido")
 
+        tarefa = self.repo.buscar_por_id(tarefa_id)
+        if not tarefa:
+            raise ValueError("Tarefa não encontrada")
+
         return self.repo.atualizar_status(tarefa_id, status)
 
     def deletar(self, tarefa_id: int):
+        tarefa = self.repo.buscar_por_id(tarefa_id)
+        if not tarefa:
+            raise ValueError("Tarefa não encontrada")
+
         return self.repo.deletar(tarefa_id)
