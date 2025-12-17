@@ -1,20 +1,21 @@
 # 🗂️ Gerenciador de Tarefas — Python + MySQL
 
-Projeto de **Gerenciador de Tarefas em linha de comando**, desenvolvido com foco em **boas práticas de backend**, organização de código, acesso a banco de dados e evolução profissional.
+Projeto de **Gerenciador de Tarefas em linha de comando**, desenvolvido com foco em **boas práticas**, **arquitetura limpa**, **validações**, **testes automatizados** e **organização profissional de código**.
 
-Este projeto faz parte de um processo de aprendizado estruturado, evoluindo do básico até conceitos mais próximos do mercado, como **arquitetura em camadas, logs e testes automatizados**.
+Este projeto evolui por **níveis**, simulando o crescimento real de um sistema backend — desde um CRUD simples até uma aplicação bem estruturada e testável.
 
 ---
 
 ## 🎯 Objetivo do Projeto
 
-Demonstrar, de forma prática:
+Permitir o **cadastro, listagem, atualização e exclusão de tarefas**, aplicando:
 
-* Organização de um projeto Python profissional
-* Separação de responsabilidades (MVC simplificado)
-* Conexão segura com banco de dados MySQL
-* Boas práticas de validação e tratamento de erros
-* Evolução incremental do código (níveis)
+* Separação de responsabilidades
+* Regras de negócio isoladas
+* Acesso a banco desacoplado
+* Testes unitários confiáveis
+
+Projeto ideal para **portfólio**, **estudo de backend** e **preparação para APIs REST**.
 
 ---
 
@@ -25,27 +26,40 @@ Demonstrar, de forma prática:
 * **mysql-connector-python**
 * **python-dotenv**
 * **pytest** (testes automatizados)
-* **logging** (logs profissionais)
-* **Arquitetura MVC simplificada**
+* **Arquitetura MVC + Service + Repository**
+* **Logs estruturados**
 * **Ambiente virtual (venv)**
 
 ---
 
 ## 📌 Funcionalidades
 
-* ✔ Criar nova tarefa
-* ✔ Listar tarefas cadastradas
-* ✔ Atualizar status da tarefa
-* ✔ Deletar tarefa
-* ✔ Validação de dados
-* ✔ Logs de execução e erros
-* ✔ Testes automatizados
-* ✔ Conexão segura com banco usando `.env`
-* ✔ Estrutura modular e escalável
+✔ Criar nova tarefa
+✔ Listar tarefas cadastradas
+✔ Atualizar status da tarefa (`pendente` / `concluido`)
+✔ Deletar tarefa
+✔ Validações de entrada
+✔ Logs de operações e erros
+✔ Testes unitários sem dependência do banco
 
 ---
 
-## 📂 Estrutura do Projeto
+## 🧱 Arquitetura do Projeto
+
+O projeto segue uma separação clara de camadas:
+
+* **models/** → Entidades do domínio
+* **controllers/** → Interface entre usuário e sistema
+* **services/** → Regras de negócio
+* **repositories/** → Acesso ao banco de dados
+* **database/** → Conexão com MySQL
+* **utils/** → Validações e logs
+* **views/** → Interface de menu (CLI)
+* **tests/** → Testes automatizados
+
+---
+
+## 📂 Estrutura de Pastas
 
 ```text
 Projeto_v1/
@@ -59,23 +73,26 @@ Projeto_v1/
 ├── repositories/
 │   └── tarefa_repository.py
 │
-├── database/
-│   └── conexao.py
-│
 ├── models/
 │   └── tarefa.py
 │
+├── database/
+│   └── conexao.py
+│
 ├── utils/
-│   ├── logger.py
-│   └── validacoes.py
+│   ├── validation.py
+│   └── logger.py
+│
+├── views/
+│   └── menu.py
 │
 ├── tests/
-│   └── test_tarefas.py
+│   ├── test_tarefa_controller.py
+│   ├── test_tarefa_service.py
+│   └── test_validation.py
 │
-├── venv/
-│
-├── .env               # CONFIGURAÇÕES PRIVADAS (NÃO versionar)
-├── .env.example       # Modelo de configuração
+├── .env               # CONFIGURAÇÕES PRIVADAS (NÃO subir no Git)
+├── .env.example       # Modelo do .env
 ├── requirements.txt
 ├── main.py
 └── README.md
@@ -83,7 +100,7 @@ Projeto_v1/
 
 ---
 
-## ⚙️ Instalação e Configuração
+## ⚙️ Configuração do Ambiente
 
 ### 1️⃣ Criar e ativar o ambiente virtual (Windows)
 
@@ -91,6 +108,8 @@ Projeto_v1/
 python -m venv venv
 .\venv\Scripts\activate
 ```
+
+---
 
 ### 2️⃣ Instalar dependências
 
@@ -100,9 +119,9 @@ pip install -r requirements.txt
 
 ---
 
-## 🔐 Configuração do Arquivo `.env`
+### 3️⃣ Configurar variáveis de ambiente
 
-Crie um arquivo `.env` na raiz do projeto:
+Crie um arquivo **.env** na raiz do projeto:
 
 ```env
 DB_HOST=localhost
@@ -112,26 +131,26 @@ DB_NAME=tarefas_db
 ```
 
 ⚠️ **Nunca envie o arquivo `.env` para o GitHub.**
-Use sempre o `.env.example` como referência.
+Use o `.env.example` como referência.
 
 ---
 
 ## 🗄️ Configuração do Banco de Dados
 
-### Criar o banco:
+### Criar o banco
 
 ```sql
 CREATE DATABASE tarefas_db;
 ```
 
-### Criar a tabela:
+### Criar a tabela
 
 ```sql
 CREATE TABLE tarefas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     descricao TEXT,
-    status ENUM('pendente', 'concluida') DEFAULT 'pendente'
+    status ENUM('pendente', 'concluido') DEFAULT 'pendente'
 );
 ```
 
@@ -145,66 +164,76 @@ Com o ambiente virtual ativado:
 python main.py
 ```
 
-Menu exibido no terminal:
+Menu exibido:
 
 ```text
-==== Gerenciador de Tarefas ====
-
+==== GERENCIADOR DE TAREFAS ====
 1 - Criar tarefa
 2 - Listar tarefas
 3 - Atualizar status
 4 - Deletar tarefa
-5 - Sair
+0 - Sair
 ```
 
 ---
 
-## 🧪 Executando os Testes
+## 🧪 Testes Automatizados
+
+O projeto possui **testes unitários completos**, cobrindo:
+
+* Validação de status
+* Regras do Service
+* Controllers
+* Fluxos válidos e inválidos
+
+### Executar os testes
 
 ```bash
-pytest
+pytest -v
 ```
 
-Os testes validam:
-
-* Criação de tarefas
-* Validação de dados
-* Atualização de status inválido
-* Regras de negócio
+✔ **Resultado atual:** `9 passed`
+Todos os testes passam com sucesso.
 
 ---
 
-## 🧩 Arquitetura e Organização
+## 📈 Evolução por Níveis
 
-O projeto segue uma **arquitetura em camadas**, facilitando manutenção e evolução:
+### 🔹 Nível 1
 
-* **models/** → entidades do domínio
-* **repositories/** → acesso ao banco de dados
-* **services/** → regras de negócio
-* **controllers/** → orquestração das operações
-* **utils/** → validações e logs
-* **main.py** → ponto de entrada da aplicação
+* CRUD básico
+* MVC simples
+* Conexão direta com banco
 
----
+### 🔹 Nível 2 (ATUAL)
 
-## 📈 Evolução do Projeto
+* Service Layer
+* Repository Pattern
+* Validações centralizadas
+* Testes unitários
+* Logs estruturados
 
-* **v1.0** → CRUD básico em Python + MySQL
-* **v2.0** → Arquitetura em camadas, logs e testes automatizados
-* **v3.0 (planejado)** → API REST com FastAPI
+### 🔜 Próximo Nível
+
+* Exceptions customizadas
+* Paginação e filtros
+* API REST com FastAPI
+* CI/CD com GitHub Actions
 
 ---
 
 ## 👤 Autor
 
-**Eduardo Silveira da Silva**
+**Eduardo S. da Silva**
 Estudante de Análise e Desenvolvimento de Sistemas
-Foco em backend, automação, Python e SQL
-Apaixonado por aprender, resolver problemas e evoluir continuamente 🚀
+Backend • Automação • SQL • Python
+
+Apaixonado por resolver problemas com código e evoluir continuamente.
 
 ---
 
 ## 📄 Licença
 
-Este projeto é livre para fins educacionais.
-Sinta-se à vontade para clonar, estudar, testar e propor melhorias.
+Este projeto é livre para estudos, melhorias e contribuições.
+
+Sinta-se à vontade para clonar, testar e evoluir 🚀
