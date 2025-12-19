@@ -45,7 +45,17 @@ def main():
 
                 print("\n--- TAREFAS ---")
                 for t in tarefas:
-                    print(f"{t['id']} - {t['titulo']} - {t['status']}")
+                    print(
+                        f"""
+                ID: {t['id']}
+                Título: {t['titulo']}
+                Status: {t['status']}
+                Criada em: {t['data_criacao']}
+                Prazo: {t['data_prazo'] or '-'}
+                Concluída em: {t['data_conclusao'] or '-'}
+                ------------------------
+                """
+                    )
 
             except Exception:
                 print("Erro interno ao listar tarefas. Veja o log.")

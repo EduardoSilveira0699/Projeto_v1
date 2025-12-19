@@ -44,11 +44,10 @@ def test_atualizar_status_valido(monkeypatch):
         lambda tarefa_id: {"id": tarefa_id, "status": "pendente"}
     )
 
-    # Simula atualização sem banco
     monkeypatch.setattr(
         service.repo,
         "atualizar_status",
-        lambda tarefa_id, status: None
+        lambda tarefa_id, status, data_conclusao: None
     )
 
     service.atualizar_status(1, "pendente")

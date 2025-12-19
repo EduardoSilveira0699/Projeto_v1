@@ -1,5 +1,6 @@
 from models.tarefa import Tarefa
 from repositories.tarefa_repository import TarefaRepository
+from datetime import datetime
 
 
 class TarefaService:
@@ -16,6 +17,8 @@ class TarefaService:
     def listar(self):
         return self.repo.listar()
 
+    from datetime import datetime
+
     def atualizar_status(self, tarefa_id: int, status: str):
         if status not in ("pendente", "concluido"):
             raise ValueError("Status inválido")
@@ -24,7 +27,16 @@ class TarefaService:
         if not tarefa:
             raise ValueError("Tarefa não encontrada")
 
-        return self.repo.atualizar_status(tarefa_id, status)
+        data_conclusao = None
+        if status == "concluido":
+            data_conclusao = datetime.now()
+
+        return self.repo.atualizar_status(
+            tarefa_id,
+            status,
+            data_conclusao
+        )
+
 
     def deletar(self, tarefa_id: int):
         tarefa = self.repo.buscar_por_id(tarefa_id)

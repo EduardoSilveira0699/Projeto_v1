@@ -23,35 +23,53 @@ class TarefaRepository:
         conn = conectar()
         cursor = conn.cursor(dictionary=True)
 
-        cursor.execute("SELECT * FROM tarefas")
-        tarefas = cursor.fetchall()
+        cursor.execute("""
+            SELECT
+                id,
+                titulo,
+                descricao,
+                status,
+                data_criacao,
+                data_prazo,
+                data_conclusao
+            FROM tarefas
+        """)
 
+        tarefas = cursor.fetchall()
         cursor.close()
         conn.close()
         return tarefas
+
 
     def buscar_por_id(self, tarefa_id):
         conn = conectar()
         cursor = conn.cursor(dictionary=True)
 
-        cursor.execute("SELECT * FROM tarefas WHERE id=%s", (tarefa_id,))
+        cursor.execute(
+            "SELECT * FROM tarefas WHERE id = %s",
+            (tarefa_id,)
+        )
         tarefa = cursor.fetchone()
 
         cursor.close()
         conn.close()
-
         return tarefa
 
-    def atualizar_status(self, tarefa_id, status):
+
+    def atualizar_status(self, tarefa_id, status, data_conclusao=None):
         conn = conectar()
         cursor = conn.cursor()
 
         cursor.execute(
-            "UPDATE tarefas SET status=%s WHERE id=%s",
-            (status, tarefa_id)
+            """
+            UPDATE tarefas
+            SET status = %s, data_conclusao = %s
+            WHERE id = %s
+            """,
+            (status, data_conclusao, tarefa_id)
         )
-        conn.commit()
 
+        conn.commit()
         cursor.close()
         conn.close()
 
